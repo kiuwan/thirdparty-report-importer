@@ -10,5 +10,5 @@ mvn clean install
 # How to use
 To convert a Fortify report (fortify.xml) to Kiuwan report (kiuwan_fortify.xml) run:
 <pre>
-java -cp fortify-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main Fortify fortify.xml kiuwan_fortify.xml
+java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main Fortify fortify.xml kiuwan_fortify.xml
 </pre>
