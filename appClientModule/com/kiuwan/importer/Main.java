@@ -1,6 +1,7 @@
 package com.kiuwan.importer;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,14 +13,17 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import com.kiuwan.importer.beans.KiuwanReport;
+import com.kiuwan.importer.beans.Violation;
 import com.kiuwan.importer.parser.FortifyReportParser;
+import com.kiuwan.importer.parser.FxCopReportParser;
 import com.kiuwan.importer.parser.ReportParser;
 
 
 public class Main {
 	
 	public enum Types {
-		FORTIFY("Fortify");
+		FORTIFY("Fortify"),
+		FXCOP("FxCop");
 		
 		private final String type;
 		
@@ -35,15 +39,34 @@ public class Main {
 	
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, JAXBException {
 		
-		if (args.length != 3) {
-			System.out.println("Incorrect syntax. <type> <input file> <output file>");
-			System.out.println("\tValid types: Fortify");
+		if (args.length < 3) {
+			System.out.println("Incorrect syntax. <type> <input file> <output file> -base-folder=<analizedFolder> -hash-code=true|false");
+			System.out.println("\tValid types: Fortify, FxCop");
+			System.out.println("\tOptions with - are optional.");
 			return;
 		}
 		
 		String type = args[0];
 		String inputFile = args[1];
 		String outputFile = args[2];
+		String analyzedFolder = "";
+		Boolean hashCode = false;
+		
+
+		for(int i = 3; i < args.length; i++) {
+			if (args[i].startsWith("-base-folder=")) {
+				analyzedFolder = args[i].replace("-base-folder=", "");
+			}
+			else if (args[i].startsWith("-hash-code:")) {
+				String param = args[i].replace("-hash-code=", "");
+				try {
+					hashCode = Boolean.parseBoolean(param);
+				} catch (Exception e) {}
+			}
+		}
+		
+		
+		
 		
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser saxParser = factory.newSAXParser();
@@ -53,6 +76,9 @@ public class Main {
 		if (type.equals(Types.FORTIFY.toString())) {
 			handler = new FortifyReportParser();
 		}
+		else if (type.equals(Types.FXCOP.toString())) {
+			handler = new FxCopReportParser(analyzedFolder);
+		}
 		
 		if (handler != null) {
 			saxParser.parse(inputFile, handler);
@@ -61,6 +87,16 @@ public class Main {
 			
 			KiuwanReport kiuwanReport = new KiuwanReport();
 			kiuwanReport.setDefects(handler.getDefects());
+			
+			if (hashCode) {
+				for(Violation defect: kiuwanReport.getDefects()) {
+					try {
+						defect.getFile().hashSourceCode();
+					} catch (NoSuchAlgorithmException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			
 			
 			File file = new File(outputFile);

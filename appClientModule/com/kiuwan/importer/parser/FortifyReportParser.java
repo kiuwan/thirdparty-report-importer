@@ -11,7 +11,7 @@ import com.kiuwan.importer.beans.Rule;
 import com.kiuwan.importer.beans.Violation;
 
 public class FortifyReportParser extends ReportParser {
-
+	
 	Boolean bVulnerability = false;
 	Boolean bRuleCode = false;
 	Boolean bSnippets = false;
@@ -26,7 +26,7 @@ public class FortifyReportParser extends ReportParser {
 	Map<String, String> snippets = new HashMap<String, String>();
 	String snippetId;
 	
-	
+
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
