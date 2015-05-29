@@ -1,16 +1,28 @@
 package com.kiuwan.importer.parser;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.kiuwan.importer.beans.File;
 import com.kiuwan.importer.beans.Rule;
 import com.kiuwan.importer.beans.Violation;
 
-public class FortifyReportParser extends ReportParser {
+public class FortifyReportParser extends DefaultHandler implements ReportParser {
+	
+	
+	Collection<Violation> defects = new ArrayList<Violation>();
+	
 	
 	Boolean bVulnerability = false;
 	Boolean bRuleCode = false;
@@ -122,6 +134,28 @@ public class FortifyReportParser extends ReportParser {
 			if (snippets.containsKey(snippetId)) {
 				defect.getFile().setCode(snippets.get(snippetId));
 			}
+		}
+		
+	}
+
+	@Override
+	public Collection<Violation> getDefects() {
+		return defects;
+	}
+
+	@Override
+	public void parse(String inputFile) {
+		
+		try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			SAXParser saxParser = factory.newSAXParser();
+			saxParser.parse(inputFile, this);
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		
 	}

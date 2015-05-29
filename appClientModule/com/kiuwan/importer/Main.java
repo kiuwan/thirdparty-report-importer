@@ -7,23 +7,25 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
 import com.kiuwan.importer.beans.KiuwanReport;
 import com.kiuwan.importer.beans.Violation;
+import com.kiuwan.importer.parser.BrakeManReportParser;
 import com.kiuwan.importer.parser.FortifyReportParser;
 import com.kiuwan.importer.parser.FxCopReportParser;
 import com.kiuwan.importer.parser.ReportParser;
+import com.kiuwan.importer.parser.RuboCopReportParser;
 
 
 public class Main {
 	
 	public enum Types {
 		FORTIFY("Fortify"),
-		FXCOP("FxCop");
+		FXCOP("FxCop"),
+		RUBOCOP("RuboCop"),
+		BRAKEMAN("BrakeMan");
 		
 		private final String type;
 		
@@ -41,7 +43,7 @@ public class Main {
 		
 		if (args.length < 3) {
 			System.out.println("Incorrect syntax. <type> <input file> <output file> -base-folder=<analizedFolder> -hash-code=true|false");
-			System.out.println("\tValid types: Fortify, FxCop");
+			System.out.println("\tValid types: Fortify, FxCop, RuboCop, BrakeMan");
 			System.out.println("\tOptions with - are optional.");
 			return;
 		}
@@ -68,25 +70,30 @@ public class Main {
 		
 		
 		
-		SAXParserFactory factory = SAXParserFactory.newInstance();
-		SAXParser saxParser = factory.newSAXParser();
 		
-		ReportParser handler = null;
+		
+		ReportParser parser = null;
 		
 		if (type.equals(Types.FORTIFY.toString())) {
-			handler = new FortifyReportParser();
+			parser = new FortifyReportParser();
 		}
 		else if (type.equals(Types.FXCOP.toString())) {
-			handler = new FxCopReportParser(analyzedFolder);
+			parser = new FxCopReportParser(analyzedFolder);
+		}
+		else if (type.equals(Types.RUBOCOP.toString())) {
+			parser = new RuboCopReportParser();
+		}
+		else if (type.equals(Types.BRAKEMAN.toString())) {
+			parser = new BrakeManReportParser();
 		}
 		
-		if (handler != null) {
-			saxParser.parse(inputFile, handler);
+		if (parser != null) {
+			parser.parse(inputFile);
 			
 			
 			
 			KiuwanReport kiuwanReport = new KiuwanReport();
-			kiuwanReport.setDefects(handler.getDefects());
+			kiuwanReport.setDefects(parser.getDefects());
 			
 			if (hashCode) {
 				for(Violation defect: kiuwanReport.getDefects()) {
