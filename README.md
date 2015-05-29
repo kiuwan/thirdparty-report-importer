@@ -1,5 +1,5 @@
 # thirdparty-report-importer
-A utility for convert a report of third party analyzers to Kiuwan format. Useful to import violations from Fortify or FxCop to Kiuwan.
+A utility for convert a report of third party analyzers to Kiuwan format. Useful to import violations from Fortify, FxCop, RuboCop or BrakeMan to Kiuwan.
 
 # How to compile
 Using maven you should write:
@@ -15,4 +15,12 @@ java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main 
 To convert a FxCop report (fxcop.xml) to Kiuwan report (kiuwan_fxcop.xml) run:
 <pre>
 java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main FxCop fxcop.xml kiuwan_fxcop.xml -base-folder=c:\dotnet_sources
+</pre>
+To convert a RuboCop report (rubocop.json) to Kiuwan report (kiuwan_rubocop.xml) run:
+<pre>
+java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main RuboCop rubocop.json kiuwan_rubocop.xml
+</pre>
+To convert a BrakeMan report (brakeman.json) to Kiuwan report (kiuwan_brakeman.xml) run:
+<pre>
+java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main BrakeMan brakeman.json kiuwan_brakeman.xml
 </pre>
