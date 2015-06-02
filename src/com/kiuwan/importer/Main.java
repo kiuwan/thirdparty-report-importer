@@ -12,7 +12,7 @@ import org.xml.sax.SAXException;
 
 import com.kiuwan.importer.beans.KiuwanReport;
 import com.kiuwan.importer.beans.Violation;
-import com.kiuwan.importer.parser.BrakeManReportParser;
+import com.kiuwan.importer.parser.BrakemanReportParser;
 import com.kiuwan.importer.parser.FortifyReportParser;
 import com.kiuwan.importer.parser.FxCopReportParser;
 import com.kiuwan.importer.parser.ReportParser;
@@ -25,7 +25,7 @@ public class Main {
 		FORTIFY("Fortify"),
 		FXCOP("FxCop"),
 		RUBOCOP("RuboCop"),
-		BRAKEMAN("BrakeMan");
+		BRAKEMAN("Brakeman");
 		
 		private final String type;
 		
@@ -68,10 +68,6 @@ public class Main {
 		}
 		
 		
-		
-		
-		
-		
 		ReportParser parser = null;
 		
 		if (type.equals(Types.FORTIFY.toString())) {
@@ -84,13 +80,11 @@ public class Main {
 			parser = new RuboCopReportParser();
 		}
 		else if (type.equals(Types.BRAKEMAN.toString())) {
-			parser = new BrakeManReportParser();
+			parser = new BrakemanReportParser(analyzedFolder);
 		}
 		
 		if (parser != null) {
-			parser.parse(inputFile);
-			
-			
+			parser.parse(inputFile);		
 			
 			KiuwanReport kiuwanReport = new KiuwanReport();
 			kiuwanReport.setDefects(parser.getDefects());
@@ -118,7 +112,7 @@ public class Main {
 			System.out.println("File " + outputFile + " successfully generated.");
 		}
 		else {
-			System.out.println("Incorrect Type");
+			System.out.println("Incorrect Type.");
 		}
 	}
 

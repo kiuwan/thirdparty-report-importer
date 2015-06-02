@@ -20,6 +20,7 @@ import com.kiuwan.importer.beans.Violation;
 
 public class FxCopReportParser extends DefaultHandler implements ReportParser {
 	
+	private final String RULECODE_PREXIX = "CUS.FXCOP.CSHARP.";
 	Collection<Violation> defects = new ArrayList<Violation>();
 	
 
@@ -51,6 +52,7 @@ public class FxCopReportParser extends DefaultHandler implements ReportParser {
 		if("Message".equalsIgnoreCase(qName)){
 			bMessage = true;
 			ruleCode = attributes.getValue("CheckId");
+			ruleCode = RULECODE_PREXIX + ruleCode;
 			if (!rules.containsKey(ruleCode)) {
 				rules.put(ruleCode, new Rule(ruleCode));
 			}

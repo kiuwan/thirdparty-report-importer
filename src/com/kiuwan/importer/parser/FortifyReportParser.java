@@ -19,18 +19,22 @@ import com.kiuwan.importer.beans.Rule;
 import com.kiuwan.importer.beans.Violation;
 
 public class FortifyReportParser extends DefaultHandler implements ReportParser {
-	
+
+	private final String RULECODE_PREXIX = "CUS.FORTIFY.";
 	
 	Collection<Violation> defects = new ArrayList<Violation>();
 	
-	
 	Boolean bVulnerability = false;
-	Boolean bRuleCode = false;
+	Boolean bClassInfo = false;
+	Boolean bType = false;
+	Boolean bSubtype = false;
 	Boolean bSnippets = false;
 	Boolean bSnippet = false;
 	Boolean bSnippetText = false;
 	
-	private StringBuilder ruleCode = new StringBuilder();
+	private String ruleCode = null;
+	private StringBuilder type = new StringBuilder();
+	private StringBuilder subtype = new StringBuilder();
 	private StringBuilder sourceCode = new StringBuilder();
 	private File file;
 	
@@ -38,16 +42,24 @@ public class FortifyReportParser extends DefaultHandler implements ReportParser 
 	Map<String, String> snippets = new HashMap<String, String>();
 	String snippetId;
 	
-
+	
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
 		if("Vulnerability".equalsIgnoreCase(qName)){
 			bVulnerability = true;
 		}
-		else if ("ClassID".equalsIgnoreCase(qName)) {
-			if (bVulnerability) {
-				bRuleCode = true;
+		else if ("ClassInfo".equalsIgnoreCase(qName)) {
+			bClassInfo = true;
+		}
+		else if ("Type".equalsIgnoreCase(qName)) {
+			if (bClassInfo) {
+				bType = true;
+			}
+		}
+		else if ("Subtype".equalsIgnoreCase(qName)) {
+			if (bClassInfo) {
+				bSubtype = true;
 			}
 		}
 		else if ("SourceLocation".equalsIgnoreCase(qName)) {
@@ -85,18 +97,31 @@ public class FortifyReportParser extends DefaultHandler implements ReportParser 
 	
 		if("Vulnerability".equalsIgnoreCase(qName)){
 			
-			defects.add(new Violation(file, rules.get(ruleCode.toString())));
+			defects.add(new Violation(file, rules.get(ruleCode)));
 			
-			ruleCode.setLength(0);
+			ruleCode = null;
+			type.setLength(0);
+			subtype.setLength(0);
 			bVulnerability = false;
 		}
-		else if ("ClassID".equalsIgnoreCase(qName)) {
-			if (bRuleCode) {
+		else if ("ClassInfo".equalsIgnoreCase(qName)) {
+			if (bClassInfo) {
+				ruleCode  = type.toString() + " " + subtype.toString();
+				ruleCode = ruleCode.replaceAll("\\s+", "_");
+				ruleCode = ruleCode.toLowerCase();
+				
+				ruleCode  = RULECODE_PREXIX + ruleCode;
 				if (!rules.containsKey(ruleCode)) {
-					rules.put(ruleCode.toString(), new Rule(ruleCode.toString()));
+					rules.put(ruleCode, new Rule(ruleCode));
 				}
-				bRuleCode = false;
 			}
+			bClassInfo = false;
+		}
+		else if ("Type".equalsIgnoreCase(qName)) {
+			bType = false;
+		}
+		else if ("Subtype".equalsIgnoreCase(qName)) {
+			bSubtype = false;
 		}
 		else if ("Snippets".equalsIgnoreCase(qName)) {
 			bSnippets = false;
@@ -118,10 +143,11 @@ public class FortifyReportParser extends DefaultHandler implements ReportParser 
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
-		if (bRuleCode) {
-			ruleCode.append(ch, start, length);
-		}
-		else if (bSnippetText) {
+		if (bType) {
+			type.append(ch, start, length);
+		} else if (bSubtype) {
+			subtype.append(ch, start, length);
+		} else if (bSnippetText) {
 			sourceCode.append(ch, start, length);
 		}
 	}

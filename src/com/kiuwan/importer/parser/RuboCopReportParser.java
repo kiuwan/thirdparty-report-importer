@@ -18,7 +18,9 @@ import com.kiuwan.importer.beans.File;
 import com.kiuwan.importer.beans.Rule;
 import com.kiuwan.importer.beans.Violation;
 
-public class BrakeManReportParser implements ReportParser {
+public class RuboCopReportParser implements ReportParser {
+	
+	private final String RULECODE_PREXIX = "CUS.RUBY.RUBOCOP.";
 	
 	
 	Collection<Violation> defects = new ArrayList<Violation>();
@@ -41,20 +43,22 @@ public class BrakeManReportParser implements ReportParser {
 	 
 			JSONObject jsonObject = (JSONObject) obj;
 	 
-			
-			//TODO: only warnings are imported. Perhaps you need to parse ignored_warnings and errors also
-			
-			JSONArray warnings = (JSONArray) jsonObject.get("warnings");
-			Iterator<JSONObject> warningsIt = warnings.iterator();
-			while (warningsIt.hasNext()) {
-				JSONObject warning = warningsIt.next();
-				
-				String warning_type = (String) warning.get("warning_type");
-				String filename = (String) warning.get("file");
-				Long line = (Long) warning.get("line");
-				String code = (String) warning.get("code");
+			JSONArray files = (JSONArray) jsonObject.get("files");
+			Iterator<JSONObject> iterator = files.iterator();
+			while (iterator.hasNext()) {
+				JSONObject file = iterator.next();
+				String filename = (String) file.get("path");
+				JSONArray offenses = (JSONArray) file.get("offenses");
+				Iterator<JSONObject> offensesIt = offenses.iterator();
+				while (offensesIt.hasNext()) {
+					JSONObject offense = offensesIt.next();
+					String message = (String) offense.get("message");
+					String cop_name = (String) offense.get("cop_name");
+					JSONObject location = (JSONObject) offense.get("location");
+					Long line = (Long) location.get("line");
 					
-				createDefect(filename, warning_type, line, code);
+					createDefect(filename, cop_name, line);
+				}
 			}
 	 
 		} catch (FileNotFoundException e) {
@@ -67,13 +71,18 @@ public class BrakeManReportParser implements ReportParser {
 		
 	}
 
-	private void createDefect(String filePath, String ruleCode, Long line, String code) {
+	private void createDefect(String filePath, String copName, Long line) {
+		
+		String normalizedCopName = copName.toLowerCase();
+		normalizedCopName = normalizedCopName.replace("/", ".");
+		
+		String ruleCode = RULECODE_PREXIX + normalizedCopName;
 		
 		if (!rules.containsKey(ruleCode)) {
 			rules.put(ruleCode, new Rule(ruleCode));
 		}
 		
-		File file = new File(line.intValue(), filePath, code);
+		File file = new File(line.intValue(), filePath, "");
 		defects.add(new Violation(file, rules.get(ruleCode)));
 		
 	}
