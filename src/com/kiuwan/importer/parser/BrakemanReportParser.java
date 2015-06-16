@@ -20,6 +20,9 @@ import com.kiuwan.importer.beans.Violation;
 
 public class BrakemanReportParser implements ReportParser {
 	
+	
+	
+	
 	private final String RULECODE_PREXIX = "CUS.RUBY.BRAKEMAN.";
 	
 	Collection<Violation> defects = new ArrayList<Violation>();
@@ -85,9 +88,12 @@ public class BrakemanReportParser implements ReportParser {
 
 	private void createDefect(String filePath, String warning, Long line, String code) {
 		
+		//System.out.println("createDefect(" + filePath + ", " + warning + ", " + line + ", " + code + ")");
+		
 		String ruleCode = warning.toLowerCase();
 		ruleCode = ruleCode.replace(" ", "_");
 		ruleCode = RULECODE_PREXIX + ruleCode;
+		
 		
 		if (!rules.containsKey(ruleCode)) {
 			rules.put(ruleCode, new Rule(ruleCode));
@@ -95,7 +101,11 @@ public class BrakemanReportParser implements ReportParser {
 		
 		String relativeFilePath = filePath.replace(analyzedFolder, "");
 		
-		File file = new File(line.intValue(), relativeFilePath, code);
+		int lineNumber = 0;
+		if (null != line) {
+			lineNumber = line.intValue();
+		}
+		File file = new File(lineNumber, relativeFilePath, code);
 		defects.add(new Violation(file, rules.get(ruleCode)));
 		
 	}

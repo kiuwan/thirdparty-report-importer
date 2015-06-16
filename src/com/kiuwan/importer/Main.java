@@ -21,6 +21,8 @@ import com.kiuwan.importer.parser.RuboCopReportParser;
 
 public class Main {
 	
+	
+	
 	public enum Types {
 		FORTIFY("Fortify"),
 		FXCOP("FxCop"),
