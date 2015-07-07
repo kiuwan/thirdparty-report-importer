@@ -21,6 +21,8 @@ import com.kiuwan.importer.beans.Violation;
 public class FortifyReportParser extends DefaultHandler implements ReportParser {
 
 	private final String RULECODE_PREXIX = "CUS.FORTIFY.";
+
+	private String language = "";
 	
 	Collection<Violation> defects = new ArrayList<Violation>();
 	
@@ -43,6 +45,10 @@ public class FortifyReportParser extends DefaultHandler implements ReportParser 
 	String snippetId;
 	
 	
+	public FortifyReportParser(String language) {
+		this.language = language.toUpperCase();
+	}
+
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
@@ -106,11 +112,14 @@ public class FortifyReportParser extends DefaultHandler implements ReportParser 
 		}
 		else if ("ClassInfo".equalsIgnoreCase(qName)) {
 			if (bClassInfo) {
-				ruleCode  = type.toString() + " " + subtype.toString();
+				ruleCode  = type.toString().trim();
+				if (subtype.length() > 0) {
+					ruleCode += " " + subtype.toString().trim();
+				}
 				ruleCode = ruleCode.replaceAll("\\s+", "_");
 				ruleCode = ruleCode.toLowerCase();
 				
-				ruleCode  = RULECODE_PREXIX + ruleCode;
+				ruleCode  = RULECODE_PREXIX + language + "." + ruleCode;
 				if (!rules.containsKey(ruleCode)) {
 					rules.put(ruleCode, new Rule(ruleCode));
 				}

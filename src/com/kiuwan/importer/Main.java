@@ -44,9 +44,8 @@ public class Main {
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, JAXBException {
 		
 		if (args.length < 3) {
-			System.out.println("Incorrect syntax. <type> <input file> <output file> -base-folder=<analizedFolder> -hash-code=true|false");
+			System.out.println("Incorrect syntax. <type> <input file> <output file> -language=<language> -base-folder=<analizedFolder> -hash-code=true|false");
 			System.out.println("\tValid types: Fortify, FxCop, RuboCop, BrakeMan");
-			System.out.println("\tOptions with - are optional.");
 			return;
 		}
 		
@@ -54,6 +53,7 @@ public class Main {
 		String inputFile = args[1];
 		String outputFile = args[2];
 		String analyzedFolder = "";
+		String language = "";
 		Boolean hashCode = false;
 		
 
@@ -61,7 +61,10 @@ public class Main {
 			if (args[i].startsWith("-base-folder=")) {
 				analyzedFolder = args[i].replace("-base-folder=", "");
 			}
-			else if (args[i].startsWith("-hash-code:")) {
+			else if (args[i].startsWith("-language=")) {
+				language = args[i].replace("-language=", "");
+			}
+			else if (args[i].startsWith("-hash-code=")) {
 				String param = args[i].replace("-hash-code=", "");
 				try {
 					hashCode = Boolean.parseBoolean(param);
@@ -73,7 +76,7 @@ public class Main {
 		ReportParser parser = null;
 		
 		if (type.equals(Types.FORTIFY.toString())) {
-			parser = new FortifyReportParser();
+			parser = new FortifyReportParser(language);
 		}
 		else if (type.equals(Types.FXCOP.toString())) {
 			parser = new FxCopReportParser(analyzedFolder);
