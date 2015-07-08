@@ -10,7 +10,7 @@ mvn clean install
 # How to use
 To convert a Fortify report (fortify.xml) to Kiuwan report (kiuwan_fortify.xml) run:
 <pre>
-java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main Fortify fortify.xml kiuwan_fortify.xml
+java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main Fortify fortify.xml kiuwan_fortify.xml -language=java|cobol
 </pre>
 To convert a FxCop report (fxcop.xml) to Kiuwan report (kiuwan_fxcop.xml) run:
 <pre>
@@ -22,5 +22,5 @@ java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main 
 </pre>
 To convert a BrakeMan report (brakeman.json) to Kiuwan report (kiuwan_brakeman.xml) run:
 <pre>
-java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main BrakeMan brakeman.json kiuwan_brakeman.xml
+java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main BrakeMan brakeman.json  kiuwan_brakeman.xml -base-folder=c:\ruby_sources
 </pre>
