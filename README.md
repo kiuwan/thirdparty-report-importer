@@ -24,3 +24,7 @@ To convert a BrakeMan report (brakeman.json) to Kiuwan report (kiuwan_brakeman.x
 <pre>
 java -cp thirdparty-report-importer-0.0.1-SNAPSHOT.jar com.kiuwan.importer.Main BrakeMan brakeman.json  kiuwan_brakeman.xml -base-folder=c:\ruby_sources
 </pre>
+To convert an Infer report (Infer.json) to Kiuwan report (kiuwan_infer.xml) run:
+<pre>
+java -cp thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main Infer infer.json  kiuwan_infer.xml
+</pre>
