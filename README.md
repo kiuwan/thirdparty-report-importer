@@ -1,5 +1,9 @@
 # thirdparty-report-importer
-A utility for convert a report of third party analyzers to Kiuwan format. Useful to import violations from Fortify, FxCop, RuboCop or BrakeMan to Kiuwan.
+A utility for convert a report of third party analyzers to Kiuwan format. Useful to import violations from Fortify, FxCop, RuboCop, BrakeManor Facebook Infer to Kiuwan.
+
+# Compiled distribution
+For your convenience we added to this repository compiled jar archives that you can use directly.
+Use thirdparty-report-importer-0.2.3.jar, this one has support for all the above mentioned thiird party analyzers.
 
 # How to compile
 Using maven you should write:
