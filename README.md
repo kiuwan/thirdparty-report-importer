@@ -14,21 +14,21 @@ mvn clean install
 # How to use
 To convert a Fortify report (fortify.xml) to Kiuwan report (kiuwan_fortify.xml) run:
 <pre>
-java -cp thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main Fortify fortify.xml kiuwan_fortify.xml -language=java|cobol
+java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main Fortify fortify.xml kiuwan_fortify.xml -language=java|cobol
 </pre>
 To convert a FxCop report (fxcop.xml) to Kiuwan report (kiuwan_fxcop.xml) run:
 <pre>
-java -cp thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main FxCop fxcop.xml kiuwan_fxcop.xml -base-folder=c:\dotnet_sources
+java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main FxCop fxcop.xml kiuwan_fxcop.xml -base-folder=c:\dotnet_sources
 </pre>
 To convert a RuboCop report (rubocop.json) to Kiuwan report (kiuwan_rubocop.xml) run:
 <pre>
-java -cp thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main RuboCop rubocop.json kiuwan_rubocop.xml
+java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main RuboCop rubocop.json kiuwan_rubocop.xml
 </pre>
 To convert a BrakeMan report (brakeman.json) to Kiuwan report (kiuwan_brakeman.xml) run:
 <pre>
-java -cp thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main BrakeMan brakeman.json  kiuwan_brakeman.xml -base-folder=c:\ruby_sources
+java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main BrakeMan brakeman.json  kiuwan_brakeman.xml -base-folder=c:\ruby_sources
 </pre>
 To convert an Infer report (Infer.json) to Kiuwan report (kiuwan_infer.xml) run:
 <pre>
-java -cp thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main Infer infer.json  kiuwan_infer.xml -language=java|c|objectivec
+java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main Infer infer.json  kiuwan_infer.xml -language=java|c|objectivec
 </pre>
