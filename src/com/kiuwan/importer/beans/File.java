@@ -1,5 +1,6 @@
 package com.kiuwan.importer.beans;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -61,9 +62,9 @@ public class File {
 		this.hashed = hashed;
 	}
 	
-	public void hashSourceCode() throws NoSuchAlgorithmException {
+	public void hashSourceCode() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-		messageDigest.update(getCode().getBytes());
+		messageDigest.update(getCode().getBytes("UTF-8"));
 		this.code = new BigInteger(1, messageDigest.digest()).toString(16);
 		hashed = true;
 	}

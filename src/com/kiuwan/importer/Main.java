@@ -1,6 +1,7 @@
 package com.kiuwan.importer;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.xml.bind.JAXBContext;
@@ -17,6 +18,7 @@ import com.kiuwan.importer.parser.FortifyReportParser;
 import com.kiuwan.importer.parser.FxCopReportParser;
 import com.kiuwan.importer.parser.ReportParser;
 import com.kiuwan.importer.parser.RuboCopReportParser;
+import com.kiuwan.importer.parser.InferReportParser;
 
 
 public class Main {
@@ -27,7 +29,8 @@ public class Main {
 		FORTIFY("Fortify"),
 		FXCOP("FxCop"),
 		RUBOCOP("RuboCop"),
-		BRAKEMAN("Brakeman");
+		BRAKEMAN("Brakeman"),
+		INFER("Infer");
 		
 		private final String type;
 		
@@ -45,7 +48,7 @@ public class Main {
 		
 		if (args.length < 3) {
 			System.out.println("Incorrect syntax. <type> <input file> <output file> -language=<language> -base-folder=<analizedFolder> -hash-code=true|false");
-			System.out.println("\tValid types: Fortify, FxCop, RuboCop, BrakeMan");
+			System.out.println("\tValid types: Fortify, FxCop, RuboCop, BrakeMan, Infer");
 			return;
 		}
 		
@@ -68,10 +71,11 @@ public class Main {
 				String param = args[i].replace("-hash-code=", "");
 				try {
 					hashCode = Boolean.parseBoolean(param);
-				} catch (Exception e) {}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-		
 		
 		ReportParser parser = null;
 		
@@ -87,6 +91,9 @@ public class Main {
 		else if (type.equals(Types.BRAKEMAN.toString())) {
 			parser = new BrakemanReportParser(analyzedFolder);
 		}
+		else if (type.equals(Types.INFER.toString())) {
+			parser = new InferReportParser(language);
+		}
 		
 		if (parser != null) {
 			parser.parse(inputFile);		
@@ -99,6 +106,8 @@ public class Main {
 					try {
 						defect.getFile().hashSourceCode();
 					} catch (NoSuchAlgorithmException e) {
+						e.printStackTrace();
+					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
 				}
