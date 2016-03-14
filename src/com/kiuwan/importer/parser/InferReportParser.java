@@ -20,12 +20,15 @@ import com.kiuwan.importer.beans.Violation;
 
 public class InferReportParser implements ReportParser {
 	
-	private final String RULECODE_PREXIX = "CUS.INFER.JAVA.";
-	
+	private final String RULECODE_PREXIX = "CUS.INFER.";
+	private String language = "java";
 	
 	Collection<Violation> defects = new ArrayList<Violation>();
 	Map<String, Rule> rules = new HashMap<String, Rule>();
 	
+	public InferReportParser(String language) {
+		this.language = language.toUpperCase();
+	}
 
 	@Override
 	public Collection<Violation> getDefects() {
@@ -72,7 +75,7 @@ public class InferReportParser implements ReportParser {
 		String normalizedDefectName = defectName.toLowerCase();
 		normalizedDefectName = normalizedDefectName.replace("/", ".");
 		
-		String ruleCode = RULECODE_PREXIX + normalizedDefectName;
+		String ruleCode = RULECODE_PREXIX + this.language + "." + normalizedDefectName;
 		
 		if (!rules.containsKey(ruleCode)) {
 			rules.put(ruleCode, new Rule(ruleCode));
