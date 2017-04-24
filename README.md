@@ -1,3 +1,5 @@
+[![Kiuwan](https://www.kiuwan.com/github/jsalado/thirdparty-report-importer/badges/security.svg)](https://www.kiuwan.com/github/jsalado/thirdparty-report-importer)
+
 # thirdparty-report-importer
 A utility to convert a report of third party analyzers to Kiuwan format. Useful to import violations from Fortify, FxCop, RuboCop, BrakeMan or Facebook Infer (https://github.com/facebook/infer) to Kiuwan.
 
