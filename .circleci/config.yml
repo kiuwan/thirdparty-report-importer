@@ -35,7 +35,7 @@ jobs:
           name: Download and Install KLA
           command: |
              wget https://www.kiuwan.com/pub/analyzer/KiuwanLocalAnalyzer.zip -P ${HOME}
-             unzip ${HOME}/KiuwanLocalAnalyzer.zip ${HOME}
+             unzip ${HOME}/KiuwanLocalAnalyzer.zip -d ${HOME}
              chmod +x ${HOME}/KiuwanLocalAnalyzer/bin/*.sh
       - run:
           name: Run Kiuwan baseline analysis
