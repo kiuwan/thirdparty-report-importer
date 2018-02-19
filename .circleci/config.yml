@@ -39,7 +39,7 @@ jobs:
              chmod +x ${HOME}/KiuwanLocalAnalyzer/bin/*.sh
       - run:
           name: Run Kiuwan baseline analysis
-          command: ${HOME}/KiuwanLocalAnalyzer/bin/agent.sh -n ${CIRCLE_PROJECT_REPONAME} -s . -l "Circle CI ${CIRCLE_BUILD_NUM}" --user ${KIUWAN_USER} --pass ${KIUWAN_PASSWD} exclude.patterns="./KiuwanLocalAnalyzer/**,**/*.min.js,**/*.Designer.vb,**/*Reference.vb,**/*Service.vb,**/*Silverlight.vb,**/*.designer.vb,**/*reference.vb,**/*service.vb,**/*silverlight.vb,**/*.Designer.cs,**/*Reference.cs,**/*Service.cs,**/*Silverlight.cs,**/*.designer.cs,**/*reference.cs,**/*service.cs,**/*silverlight.cs,**/.*,**/Pods/BuildHeaders/**/*.h,**/Pods/Headers/**/*.h include.patterns=**/**"
+          command: ${HOME}/KiuwanLocalAnalyzer/bin/agent.sh -n ${CIRCLE_PROJECT_REPONAME} -s . -l "Circle CI ${CIRCLE_BUILD_NUM}" --user ${KIUWAN_USER} --pass ${KIUWAN_PASSWD} exclude.patterns="./KiuwanLocalAnalyzer/**,**/*.min.js,**/*.Designer.vb,**/*Reference.vb,**/*Service.vb,**/*Silverlight.vb,**/*.designer.vb,**/*reference.vb,**/*service.vb,**/*silverlight.vb,**/*.Designer.cs,**/*Reference.cs,**/*Service.cs,**/*Silverlight.cs,**/*.designer.cs,**/*reference.cs,**/*service.cs,**/*silverlight.cs,**/.*,**/Pods/BuildHeaders/**/*.h,**/Pods/Headers/**/*.h include.patterns=**/**" supported.technologies=abap,actionscript,aspnet,c,cobol,cpp,csharp,html,java,javascript,jcl,jsp,natural,objectivec,oracleforms,perl,php,powerscript,python,rpg4,ruby,swift,vb6,vbnet,xml
 
       - save_cache:
           paths:
