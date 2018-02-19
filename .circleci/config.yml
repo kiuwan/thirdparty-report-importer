@@ -32,6 +32,6 @@ jobs:
              chmod +x ${HOME}/KiuwanLocalAnalyzer/bin/*.sh
       - run:
           name: Run Kiuwan baseline analysis
-          command: ${HOME}/KiuwanLocalAnalyzer/bin/agent.sh -n ${CIRCLE_PROJECT_REPONAME} -s ${HOME}/repo -l "Circle CI ${CIRCLE_BUILD_NUM}" -c --user ${KIUWAN_USER} --pass ${KIUWAN_PASSWD} exclude.patterns="./KiuwanLocalAnalyzer/**,**/*.min.js,**/*.Designer.vb,**/*Reference.vb,**/*Service.vb,**/*Silverlight.vb,**/*.designer.vb,**/*reference.vb,**/*service.vb,**/*silverlight.vb,**/*.Designer.cs,**/*Reference.cs,**/*Service.cs,**/*Silverlight.cs,**/*.designer.cs,**/*reference.cs,**/*service.cs,**/*silverlight.cs,**/.*,**/Pods/BuildHeaders/**/*.h,**/Pods/Headers/**/*.h include.patterns=**/**" ignore=architecture
+          command: ${HOME}/KiuwanLocalAnalyzer/bin/agent.sh -n ${CIRCLE_PROJECT_REPONAME} -s ${HOME}/repo -l "Circle CI ${CIRCLE_BUILD_NUM}" -c -wr --user ${KIUWAN_USER} --pass ${KIUWAN_PASSWD} exclude.patterns="./KiuwanLocalAnalyzer/**,**/*.min.js,**/*.Designer.vb,**/*Reference.vb,**/*Service.vb,**/*Silverlight.vb,**/*.designer.vb,**/*reference.vb,**/*service.vb,**/*silverlight.vb,**/*.Designer.cs,**/*Reference.cs,**/*Service.cs,**/*Silverlight.cs,**/*.designer.cs,**/*reference.cs,**/*service.cs,**/*silverlight.cs,**/.*,**/Pods/BuildHeaders/**/*.h,**/Pods/Headers/**/*.h include.patterns=**/**" ignore=architecture
 
 
