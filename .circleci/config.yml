@@ -1,0 +1,32 @@
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:8-jdk
+      
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and install KLA
+      - run: 
+          name: Download and Install KLA
+          command: |
+             wget https://www.kiuwan.com/pub/analyzer/KiuwanLocalAnalyzer.zip -P ${HOME}
+             unzip ${HOME}/KiuwanLocalAnalyzer.zip -d ${HOME}
+             chmod +x ${HOME}/KiuwanLocalAnalyzer/bin/*.sh
+      - run:
+          name: Run Kiuwan baseline analysis
+          command: ${HOME}/KiuwanLocalAnalyzer/bin/agent.sh -n ${CIRCLE_PROJECT_REPONAME} -s ${HOME}/repo -l "Circle CI ${CIRCLE_BUILD_NUM}" -c -wr --user ${KIUWAN_USER} --pass ${KIUWAN_PASSWD} exclude.patterns="./KiuwanLocalAnalyzer/**,**/*.min.js,**/*.Designer.vb,**/*Reference.vb,**/*Service.vb,**/*Silverlight.vb,**/*.designer.vb,**/*reference.vb,**/*service.vb,**/*silverlight.vb,**/*.Designer.cs,**/*Reference.cs,**/*Service.cs,**/*Silverlight.cs,**/*.designer.cs,**/*reference.cs,**/*service.cs,**/*silverlight.cs,**/.*,**/Pods/BuildHeaders/**/*.h,**/Pods/Headers/**/*.h include.patterns=**/**" ignore=architecture
+
+

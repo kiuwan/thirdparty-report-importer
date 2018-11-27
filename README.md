@@ -1,5 +1,7 @@
+[![Kiuwan](https://www.kiuwan.com/github/jsalado/thirdparty-report-importer/badges/security.svg)](https://www.kiuwan.com/github/jsalado/thirdparty-report-importer) [![Kiuwan](https://www.kiuwan.com/github/jsalado/thirdparty-report-importer/badges/quality.svg)](https://www.kiuwan.com/github/jsalado/thirdparty-report-importer)
+
 # thirdparty-report-importer
-A utility for convert a report of third party analyzers to Kiuwan format. Useful to import violations from Fortify, FxCop, RuboCop, BrakeMan or [Facebook Infer](https://github.com/facebook/infer) to Kiuwan.
+A utility to convert a report of third party analyzers to Kiuwan format. Useful to import violations from Fortify, FxCop, RuboCop, BrakeMan or Facebook Infer (https://github.com/facebook/infer) to Kiuwan.
 
 # Compiled distribution
 For your convenience we added to this repository compiled jar archives that you can use directly.
@@ -26,7 +28,7 @@ java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main Ru
 </pre>
 To convert a BrakeMan report (brakeman.json) to Kiuwan report (kiuwan_brakeman.xml) run:
 <pre>
-java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main BrakeMan brakeman.json  kiuwan_brakeman.xml -base-folder=c:\ruby_sources
+java -cp kiuwan-thirdparty-report-importer-0.2.3.jar com.kiuwan.importer.Main Brakeman brakeman.json  kiuwan_brakeman.xml -base-folder=c:\ruby_sources
 </pre>
 To convert an Infer report (Infer.json) to Kiuwan report (kiuwan_infer.xml) run:
 <pre>
